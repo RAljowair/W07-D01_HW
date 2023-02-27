@@ -14,7 +14,7 @@ CREATE TABLE users (
     email varchar(20) ,
     gender CHAR(1),
     date_of_birth DATE,
-    created_at DATETIME,
+    created_at DATETIME DEFAULT CURRENT_TIME,
     country_code INT(5),
 
     PRIMARY KEY (id),
@@ -28,7 +28,7 @@ CREATE TABLE orders (
     id INT(10) ,
     user_id INT(10) ,
     status varchar(6) ,
-    created_at DATETIME,
+    created_at DATETIME DEFAULT CURRENT_TIME,
 
     PRIMARY KEY (id),
     FOREIGN KEY(user_id) REFERENCES users(id),
@@ -50,7 +50,7 @@ CREATE TABLE products (
     name VARCHAR(10) NOT NULL , # 1. added not null constraint
     price INT DEFAULT 0, # 2. added default value
     status VARCHAR(10) ,
-    created_at DATETIME DEFAULT CURRENT_DATE,
+    created_at DATETIME DEFAULT CURRENT_TIME,
     PRIMARY KEY(id),
     CONSTRAINT status CHECK ( status = 'valid' or status = 'expired') # 3. added check constraint
 );
@@ -60,16 +60,16 @@ CREATE TABLE products (
 INSERT INTO countries VALUES (966,'Saudi Arabia','Eroupe');
 INSERT INTO countries VALUES (1,'America','America');
 
-INSERT INTO users VALUES (123876541, 'Rayan Zeyd Jowair', 'rayan@gmail.com', 'm', '1999-12-12' , CURRENT_DATE, 966);
-INSERT INTO users VALUES (123876550, 'Sara jacson', 'sara.j@gmail.com', 'f', '1995-6-24' , CURRENT_DATE, 1);
+INSERT INTO users VALUES (123876541, 'Rayan Zeyd Jowair', 'rayan@gmail.com', 'm', '1999-12-12' , CURRENT_TIME, 966);
+INSERT INTO users VALUES (123876550, 'Sara jacson', 'sara.j@gmail.com', 'f', '1995-6-24' , CURRENT_TIME, 1);
 
-INSERT INTO orders VALUES (1010151520,123876541,'start',CURRENT_DATE);
-INSERT INTO orders VALUES (1010151530,123876550,'finish',CURRENT_DATE);
+INSERT INTO orders VALUES (1010151520,123876541,'start',CURRENT_TIME);
+INSERT INTO orders VALUES (1010151530,123876550,'finish',CURRENT_TIME);
 
-INSERT INTO products VALUES (500121224,'$50 PSN', 50, 'valid',CURRENT_DATE);
-INSERT INTO products VALUES (500121225,'$20 PSN', 20,'valid',CURRENT_DATE);
-INSERT INTO products VALUES (500121226,'$10 PSN', 10,'valid',CURRENT_DATE);
-INSERT INTO products VALUES (500121227,'$5 PSN', 5,'expired',CURRENT_DATE);
+INSERT INTO products VALUES (500121224,'$50 PSN', 50, 'valid',CURRENT_TIME);
+INSERT INTO products VALUES (500121225,'$20 PSN', 20,'valid',CURRENT_TIME);
+INSERT INTO products VALUES (500121226,'$10 PSN', 10,'valid',CURRENT_TIME);
+INSERT INTO products VALUES (500121227,'$5 PSN', 5,'expired',CURRENT_TIME);
 
 INSERT INTO order_products VALUES (1010151520, 500121224,1);
 INSERT INTO order_products VALUES (1010151530, 500121226,1);
@@ -85,4 +85,6 @@ Select * FROM order_products;
 UPDATE countries SET continent_name='Asia' WHERE code='966';
 
 # DML - Delete
-DELETE FROM products WHERE id=500121227;
+SET FOREIGN_KEY_CHECKS=0;
+DELETE FROM products WHERE id=500121224;
+SET FOREIGN_KEY_CHECKS=1;
